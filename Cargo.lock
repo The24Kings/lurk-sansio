@@ -52,9 +52,9 @@ dependencies = [
 
 [[package]]
 name = "lurk_lcsc"
-version = "2.3.14"
+version = "2.3.20"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c0d76633e3b6e478373ab323f430ea5be36ff05d2c25be2dee7864e93f53e73a"
+checksum = "dc2d854a9ad278672f9bea89255b03f9f9cfa6aadbd7e90ba513f1a771169ef9"
 dependencies = [
  "bitflags",
  "serde",

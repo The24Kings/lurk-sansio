@@ -1,3 +1,13 @@
+//! The core sans-IO game engine.
+//!
+//! [`GameEngine`] is the central struct of this crate. It holds all game state in memory
+//! and exposes a simple input/output interface:
+//!
+//! 1. Call [`GameEngine::handle_input`] with an [`Input`] event.
+//! 2. Call [`GameEngine::poll_output`] in a loop to drain the resulting [`Output`] events.
+//!
+//! The engine never performs IO itself — that responsibility belongs to your event loop.
+
 use std::collections::{HashMap, VecDeque};
 use std::sync::Arc;
 
@@ -6,8 +16,26 @@ use crate::output::{ConnectionInfo, Output, RoomInfo};
 use crate::state::{GameConfig, PlayerState, Room};
 use crate::types::{ClientId, LurkError};
 
-/// The core sans-IO game engine. Accepts [`Input`] events, mutates internal state,
-/// and produces [`Output`] events that the event loop must execute.
+/// The core sans-IO game engine.
+///
+/// Accepts [`Input`] events, mutates internal state, and produces [`Output`] events
+/// that the event loop must execute.
+///
+/// # Example
+///
+/// ```rust
+/// use std::collections::HashMap;
+/// use lurk_sansio::{GameEngine, GameConfig, Input, Output, ClientId};
+///
+/// let mut engine = GameEngine::new(
+///     HashMap::new(),
+///     GameConfig { initial_points: 100, stat_limit: 65535 },
+/// );
+///
+/// engine.handle_input(Input::ClientConnected { client: ClientId(1) });
+/// // No outputs for a bare connect — the event loop sends Version/Game on its own.
+/// assert!(engine.poll_output().is_none());
+/// ```
 pub struct GameEngine {
     pub(crate) players: HashMap<Arc<str>, PlayerState>,
     pub(crate) rooms: HashMap<u16, Room>,
@@ -17,6 +45,9 @@ pub struct GameEngine {
 
 impl GameEngine {
     /// Create a new game engine with the given rooms and configuration.
+    ///
+    /// The `rooms` map defines the game world (including monsters and connections).
+    /// The `config` controls character creation constraints.
     pub fn new(rooms: HashMap<u16, Room>, config: GameConfig) -> Self {
         Self {
             players: HashMap::new(),
@@ -46,7 +77,11 @@ impl GameEngine {
         &mut self.rooms
     }
 
-    /// Feed an input event into the engine. Handlers push outputs to the internal queue.
+    /// Feed an input event into the engine.
+    ///
+    /// Dispatches to the appropriate handler based on the [`Input`] variant.
+    /// Any resulting side-effects are queued internally and can be retrieved
+    /// via [`GameEngine::poll_output`].
     pub fn handle_input(&mut self, input: Input) {
         match input {
             Input::ClientConnected { .. } => {
@@ -86,6 +121,9 @@ impl GameEngine {
     }
 
     /// Drain the next output event. Returns `None` when the queue is empty.
+    ///
+    /// Call this in a loop after each [`GameEngine::handle_input`] to collect all
+    /// side-effects that the event loop must execute.
     pub fn poll_output(&mut self) -> Option<Output> {
         self.outputs.pop_front()
     }

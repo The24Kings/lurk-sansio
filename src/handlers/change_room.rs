@@ -11,14 +11,13 @@ impl GameEngine {
             };
 
             let cur_room = ps.character.current_room;
-            let pname = name.clone();
             let snapshot = ps.clone();
 
             if !self.ensure_started(&snapshot, client) {
                 return;
             }
 
-            (pname, cur_room)
+            (name.clone(), cur_room)
         };
 
         // Check not already in target room
