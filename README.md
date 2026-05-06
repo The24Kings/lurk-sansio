@@ -1,6 +1,6 @@
 # lurk-sansio
 
-A sans-IO game engine for the [Lurk protocol](https://github.com/sethlong/lurk) created by S. Seth Long, Ph.D.
+A sans-IO game engine for the [Lurk protocol](https://github.com/The24Kings/LurkProtocol/wiki) created by S. Seth Long, Ph.D.
 
 All game logic lives here. There are no sockets, no async runtimes, and no threads. You feed `Input` events in, poll `Output` events out, and your event loop handles the actual networking.
 
