@@ -81,13 +81,16 @@ impl GameEngine {
         let updated_player = ps.character.clone();
 
         // Send updated player and monster to the client
-        self.emit(Output::SendCharacter {
-            client,
-            character: updated_player,
-        });
-        self.emit(Output::SendCharacter {
-            client,
-            character: monster_character,
-        });
+        if let Some(_) = self.players.get(&player_name) {
+            self.emit(Output::AlertRoom {
+                room_number: current_room,
+                character: updated_player,
+            });
+
+            self.emit(Output::AlertRoom {
+                room_number: current_room,
+                character: monster_character,
+            });
+        }
     }
 }
