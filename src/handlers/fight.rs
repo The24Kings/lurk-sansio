@@ -73,10 +73,16 @@ impl GameEngine {
             .name
             .clone();
 
-        // Narrate the attack (to room, excluding attacker conceptually — but we send to all)
+        // Narrate the attack
         self.emit(Output::Narrate {
             room_number: current_room,
             message: format!("{} is attacking {}", attacker_name, target_name).into(),
+            narration: false,
+        });
+
+        self.emit(Output::Narrate {
+            room_number: current_room,
+            message: format!("{} player's joining the fight", in_battle.len() - 1).into(),
             narration: false,
         });
 
@@ -86,12 +92,6 @@ impl GameEngine {
             .filter_map(|name| self.players.get(name))
             .map(|ps| ps.character.attack)
             .sum();
-
-        self.emit(Output::Narrate {
-            room_number: current_room,
-            message: format!("Joining '{}' in attacking '{}'", attacker_name, target_name).into(),
-            narration: false,
-        });
 
         // Apply damage to monster
         let monster = &mut self
