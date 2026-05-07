@@ -13,7 +13,7 @@ rust-version = "1.85"
 
 [dependencies]
 indexmap = { version = "2.14.0", features = ["serde"] }
-lurk_lcsc = "2.3.20"
+lurk_lcsc = { version = "2.3.21" }
 serde = { version = "1.0", features = ["derive", "rc"] }
 
 [package.metadata.docs.rs]
