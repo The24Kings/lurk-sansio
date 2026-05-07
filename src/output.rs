@@ -79,7 +79,17 @@ pub enum Output {
         recipient_name: Arc<str>,
         /// The message body.
         message: Box<str>,
-        /// Whether this is a server narration vs. a player message.
+    },
+
+    /// Send a Narration from narrator or server to a specific client
+    SendNarration {
+        /// Target client (the recipient).
+        client: ClientId,
+        /// Display name of the recipient.
+        recipient_name: Arc<str>,
+        /// The message body.
+        message: Box<str>,
+        /// Whether this is a server narration vs. story narration
         narration: bool,
     },
 
