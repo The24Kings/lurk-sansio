@@ -46,7 +46,7 @@
 //! - **Portable**: Runs anywhere Rust compiles — embed in a server, WASM, or a test harness.
 //! - **Deterministic**: Same inputs always produce the same outputs (no internal randomness).
 
-#![doc(html_root_url = "https://docs.rs/lurk-sansio/1.0.1")]
+#![doc(html_root_url = "https://docs.rs/lurk-sansio/1.0.2")]
 #![cfg_attr(docsrs, feature(doc_cfg, rustdoc_internals))]
 #![cfg_attr(docsrs, allow(internal_features))]
 // Ignored clippy and clippy_pedantic lints
