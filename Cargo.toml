@@ -1,6 +1,6 @@
 [package]
 name = "lurk-sansio"
-version = "1.0.3"
+version = "1.0.4"
 authors = ["Riley Ziegler", "S. Seth Long, Ph.D"]
 categories = ["network-programming"]
 description = "Sans-IO game engine for the Lurk protocol"

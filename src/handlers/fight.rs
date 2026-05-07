@@ -82,7 +82,7 @@ impl GameEngine {
 
         self.emit(Output::Narrate {
             room_number: current_room,
-            message: format!("{} player's joining the fight", in_battle.len() - 1).into(),
+            message: format!("{} player(s) joining the fight", in_battle.len() - 1).into(),
             narration: false,
         });
 
