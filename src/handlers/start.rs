@@ -1,6 +1,8 @@
+use lurk_lcsc::CharacterFlags;
+
 use crate::engine::GameEngine;
 use crate::output::Output;
-use crate::types::{CharacterFlags, ClientId, LurkError};
+use crate::types::ClientId;
 
 impl GameEngine {
     pub(crate) fn handle_start(&mut self, client: ClientId) {
@@ -10,18 +12,19 @@ impl GameEngine {
                 return;
             };
 
-            if !ps.character.flags.is_ready() {
-                self.emit(Output::SendError {
-                    client,
-                    error_code: LurkError::NOTREADY,
-                    message: "Supply a valid player first!".into(),
-                });
+            let snapshot = ps.clone();
+
+            if !self.ensure_ready(&snapshot, client) {
                 return;
             }
 
-            ps.character.flags |= CharacterFlags::STARTED;
             name
         };
+
+        // Set the STARTED flag.
+        if let Some(ps) = self.players.get_mut(&player_name) {
+            ps.character.flags |= CharacterFlags::STARTED;
+        }
 
         // Send updated character to the client
         if let Some(ps) = self.players.get(&player_name) {

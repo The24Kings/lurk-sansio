@@ -1,6 +1,8 @@
+use lurk_lcsc::CharacterFlags;
+
 use crate::engine::GameEngine;
 use crate::output::Output;
-use crate::types::{CharacterFlags, ClientId};
+use crate::types::ClientId;
 
 impl GameEngine {
     pub(crate) fn handle_leave(&mut self, client: ClientId) {

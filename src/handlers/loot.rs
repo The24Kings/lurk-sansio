@@ -1,8 +1,10 @@
 use std::sync::Arc;
 
+use lurk_lcsc::LurkError;
+
 use crate::engine::GameEngine;
 use crate::output::Output;
-use crate::types::{ClientId, LurkError};
+use crate::types::ClientId;
 
 impl GameEngine {
     pub(crate) fn handle_loot(&mut self, client: ClientId, target_name: Arc<str>) {
@@ -13,14 +15,13 @@ impl GameEngine {
             };
 
             let room = ps.character.current_room;
-            let pname = name.clone();
             let snapshot = ps.clone();
 
             if !self.ensure_started(&snapshot, client) {
                 return;
             }
 
-            (pname, room)
+            (name, room)
         };
 
         // Get room and find target monster

@@ -1,26 +1,8 @@
 //! Protocol-level type re-exports and transport-agnostic identifiers.
-//!
-//! This module re-exports key types from [`lurk_lcsc`] so that consumers of this crate
-//! do not need to add a direct dependency on the protocol library.
 
 use std::fmt;
 
 use serde::{Deserialize, Serialize};
-
-/// Bitflags describing character state (alive, started, monster, etc.).
-///
-/// Re-exported from [`lurk_lcsc::CharacterFlags`].
-pub use lurk_lcsc::CharacterFlags;
-
-/// Error codes defined by the Lurk protocol.
-///
-/// Re-exported from [`lurk_lcsc::LurkError`].
-pub use lurk_lcsc::LurkError;
-
-/// Packet type discriminants defined by the Lurk protocol.
-///
-/// Re-exported from [`lurk_lcsc::PktType`].
-pub use lurk_lcsc::PktType;
 
 /// Opaque client identifier assigned by the event loop.
 ///

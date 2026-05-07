@@ -1,9 +1,11 @@
 use std::sync::Arc;
 
+use lurk_lcsc::{LurkError, PktType};
+
 use crate::engine::GameEngine;
 use crate::output::Output;
 use crate::state::{Character, PlayerState};
-use crate::types::{ClientId, LurkError, PktType};
+use crate::types::ClientId;
 
 impl GameEngine {
     pub(crate) fn handle_character(

@@ -6,10 +6,11 @@
 
 use std::sync::Arc;
 
+use lurk_lcsc::{LurkError, PktType};
 use serde::{Deserialize, Serialize};
 
 use crate::state::{Character, Connection, Room};
-use crate::types::{ClientId, LurkError, PktType};
+use crate::types::ClientId;
 
 /// Side-effects produced by the game engine.
 ///

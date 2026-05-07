@@ -8,9 +8,10 @@ use std::collections::HashMap;
 use std::sync::Arc;
 
 use indexmap::IndexSet;
+use lurk_lcsc::CharacterFlags;
 use serde::{Deserialize, Serialize};
 
-use crate::types::{CharacterFlags, ClientId};
+use crate::types::ClientId;
 
 /// Server-side character representation, free of any IO concerns.
 ///

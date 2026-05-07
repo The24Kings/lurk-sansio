@@ -2,6 +2,7 @@ use std::collections::HashMap;
 use std::sync::Arc;
 
 use indexmap::IndexSet;
+use lurk_lcsc::{CharacterFlags, LurkError, PktType};
 use lurk_sansio::*;
 
 // ==================== Test Helpers ====================

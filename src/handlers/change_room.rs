@@ -1,6 +1,8 @@
+use lurk_lcsc::LurkError;
+
 use crate::engine::GameEngine;
 use crate::output::Output;
-use crate::types::{ClientId, LurkError};
+use crate::types::ClientId;
 
 impl GameEngine {
     pub(crate) fn handle_change_room(&mut self, client: ClientId, nxt_room_id: u16) {

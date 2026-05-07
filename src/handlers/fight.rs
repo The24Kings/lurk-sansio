@@ -1,8 +1,10 @@
 use std::sync::Arc;
 
+use lurk_lcsc::LurkError;
+
 use crate::engine::GameEngine;
 use crate::output::Output;
-use crate::types::{ClientId, LurkError};
+use crate::types::ClientId;
 
 impl GameEngine {
     pub(crate) fn handle_fight(&mut self, client: ClientId) {
@@ -13,14 +15,13 @@ impl GameEngine {
             };
 
             let room = ps.character.current_room;
-            let pname = name.clone();
             let snapshot = ps.clone();
 
             if !self.ensure_started(&snapshot, client) {
                 return;
             }
 
-            (pname, room)
+            (name, room)
         };
 
         // Collect all players that will join in battle (those with BATTLE flag in same room)
@@ -110,9 +111,7 @@ impl GameEngine {
         // DEFENSE PHASE: Monster counterattack (if not victory)
         let monster_attack = monster.attack;
 
-        if !victory
-            && let Some(ps) = self.players.get_mut(&attacker_name)
-        {
+        if !victory && let Some(ps) = self.players.get_mut(&attacker_name) {
             let counter_damage = monster_attack.saturating_sub(ps.character.defense);
             let counter_damage: i16 = counter_damage.try_into().unwrap_or(i16::MAX);
             ps.character.health = ps.character.health.saturating_sub(counter_damage);

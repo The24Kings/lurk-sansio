@@ -1,8 +1,9 @@
+use lurk_lcsc::LurkError;
 use std::sync::Arc;
 
 use crate::engine::GameEngine;
 use crate::output::Output;
-use crate::types::{ClientId, LurkError};
+use crate::types::ClientId;
 
 impl GameEngine {
     pub(crate) fn handle_message(
@@ -47,7 +48,6 @@ impl GameEngine {
             sender_name,
             recipient_name,
             message,
-            narration: false,
         });
     }
 }

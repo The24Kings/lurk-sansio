@@ -5,16 +5,16 @@
 //!
 //! 1. Call [`GameEngine::handle_input`] with an [`Input`] event.
 //! 2. Call [`GameEngine::poll_output`] in a loop to drain the resulting [`Output`] events.
-//!
-//! The engine never performs IO itself — that responsibility belongs to your event loop.
 
 use std::collections::{HashMap, VecDeque};
 use std::sync::Arc;
 
+use lurk_lcsc::LurkError;
+
 use crate::input::Input;
 use crate::output::{ConnectionInfo, Output, RoomInfo};
 use crate::state::{GameConfig, PlayerState, Room};
-use crate::types::{ClientId, LurkError};
+use crate::types::ClientId;
 
 /// The core sans-IO game engine.
 ///
@@ -146,6 +146,21 @@ impl GameEngine {
             .map(|(name, ps)| (name.clone(), ps))
     }
 
+    /// Check that a player is ready, but not started. Emits an error to the client if not.
+    /// Returns `true` if the player is ready.
+    pub(crate) fn ensure_ready(&mut self, player: &PlayerState, client: ClientId) -> bool {
+        if !player.character.flags.is_ready() {
+            self.emit(Output::SendError {
+                client,
+                error_code: LurkError::NOTREADY,
+                message: "Supply a valid player first!".into(),
+            });
+            return false;
+        }
+
+        true
+    }
+
     /// Check that a player is started and ready. Emits an error to the client if not.
     /// Returns `true` if the player is started and ready.
     pub(crate) fn ensure_started(&mut self, player: &PlayerState, client: ClientId) -> bool {
@@ -209,6 +224,139 @@ impl GameEngine {
                 client,
                 connection: conn,
             });
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use lurk_lcsc::{CharacterFlags, LurkError};
+    use std::collections::HashMap;
+    use std::sync::Arc;
+
+    use crate::{ClientId, GameConfig, GameEngine, Output, PlayerState, state};
+
+    // Helper to build a minimal engine for unit tests
+    fn minimal_engine() -> GameEngine {
+        GameEngine::new(
+            HashMap::new(),
+            GameConfig {
+                initial_points: 100,
+                stat_limit: 65535,
+            },
+        )
+    }
+
+    #[test]
+    fn ensure_ready_emits_notready_and_returns_false() {
+        let mut engine = minimal_engine();
+
+        // Insert a player that is not READY
+        engine.players.insert(
+            Arc::from("Tester"),
+            PlayerState {
+                character: state::Character {
+                    name: Arc::from("Tester"),
+                    flags: CharacterFlags::empty(),
+                    attack: 1,
+                    defense: 1,
+                    regen: 1,
+                    health: 100,
+                    gold: 0,
+                    current_room: 0,
+                    description: "desc".into(),
+                },
+                client: Some(ClientId(42)),
+            },
+        );
+
+        let snapshot = engine.players.get(&Arc::from("Tester")).unwrap().clone();
+
+        let ok = engine.ensure_ready(&snapshot, ClientId(42));
+        assert!(!ok, "ensure_ready must return false for non-ready player");
+
+        // Should have emitted a NOTREADY error
+        let found = engine.poll_output();
+        match found {
+            Some(Output::SendError { error_code, .. }) => {
+                assert_eq!(error_code, LurkError::NOTREADY);
+            }
+            other => panic!("Expected SendError NOTREADY, got: {:?}", other),
+        }
+    }
+
+    #[test]
+    fn ensure_started_behavior() {
+        let mut engine = minimal_engine();
+
+        // Insert a player that is READY but not STARTED
+        engine.players.insert(
+            Arc::from("ReadyPlayer"),
+            PlayerState {
+                character: state::Character {
+                    name: Arc::from("ReadyPlayer"),
+                    flags: CharacterFlags::alive() | CharacterFlags::READY,
+                    attack: 1,
+                    defense: 1,
+                    regen: 1,
+                    health: 100,
+                    gold: 0,
+                    current_room: 0,
+                    description: "desc".into(),
+                },
+                client: Some(ClientId(43)),
+            },
+        );
+
+        let snapshot = engine
+            .players
+            .get(&Arc::from("ReadyPlayer"))
+            .unwrap()
+            .clone();
+
+        // ensure_started should return true for READY players
+        assert!(engine.ensure_started(&snapshot, ClientId(43)));
+
+        // No error should be emitted
+        assert!(engine.poll_output().is_none());
+
+        // Insert a player that is neither READY nor STARTED
+        engine.players.insert(
+            Arc::from("NotStarted"),
+            PlayerState {
+                character: state::Character {
+                    name: Arc::from("NotStarted"),
+                    flags: CharacterFlags::empty(),
+                    attack: 1,
+                    defense: 1,
+                    regen: 1,
+                    health: 100,
+                    gold: 0,
+                    current_room: 0,
+                    description: "desc".into(),
+                },
+                client: Some(ClientId(44)),
+            },
+        );
+
+        let snapshot2 = engine
+            .players
+            .get(&Arc::from("NotStarted"))
+            .unwrap()
+            .clone();
+        let ok = engine.ensure_started(&snapshot2, ClientId(44));
+        assert!(
+            !ok,
+            "ensure_started must return false when neither started nor ready"
+        );
+
+        // Should have emitted a NOTREADY error
+        let found = engine.poll_output();
+        match found {
+            Some(Output::SendError { error_code, .. }) => {
+                assert_eq!(error_code, LurkError::NOTREADY);
+            }
+            other => panic!("Expected SendError NOTREADY, got: {:?}", other),
         }
     }
 }
