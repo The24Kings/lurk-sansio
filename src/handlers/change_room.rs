@@ -1,4 +1,4 @@
-use lurk_lcsc::LurkError;
+use lurk_protocol::LurkError;
 
 use crate::engine::GameEngine;
 use crate::output::Output;

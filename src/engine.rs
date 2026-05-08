@@ -9,7 +9,7 @@
 use std::collections::{HashMap, VecDeque};
 use std::sync::Arc;
 
-use lurk_lcsc::LurkError;
+use lurk_protocol::LurkError;
 
 use crate::input::Input;
 use crate::output::{ConnectionInfo, Output, RoomInfo};
@@ -25,7 +25,7 @@ use crate::types::ClientId;
 ///
 /// ```rust
 /// use std::collections::HashMap;
-/// use lurk_sansio::{GameEngine, GameConfig, Input, Output, ClientId};
+/// use lurk_engine::{GameEngine, GameConfig, Input, Output, ClientId};
 ///
 /// let mut engine = GameEngine::new(
 ///     HashMap::new(),
@@ -230,7 +230,7 @@ impl GameEngine {
 
 #[cfg(test)]
 mod tests {
-    use lurk_lcsc::{CharacterFlags, LurkError};
+    use lurk_protocol::{CharacterFlags, LurkError};
     use std::collections::HashMap;
     use std::sync::Arc;
 

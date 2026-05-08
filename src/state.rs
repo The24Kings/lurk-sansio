@@ -8,7 +8,7 @@ use std::collections::HashMap;
 use std::sync::Arc;
 
 use indexmap::IndexSet;
-use lurk_lcsc::CharacterFlags;
+use lurk_protocol::CharacterFlags;
 use serde::{Deserialize, Serialize};
 
 use crate::types::ClientId;
@@ -47,7 +47,7 @@ impl Character {
     ///
     /// ```rust
     /// use std::sync::Arc;
-    /// use lurk_sansio::Character;
+    /// use lurk_engine::Character;
     ///
     /// let ch = Character::with_defaults(
     ///     Arc::from("Link"),

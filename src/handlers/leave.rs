@@ -1,4 +1,4 @@
-use lurk_lcsc::CharacterFlags;
+use lurk_protocol::CharacterFlags;
 
 use crate::engine::GameEngine;
 use crate::output::Output;

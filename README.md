@@ -8,7 +8,7 @@ All game logic lives here. There are no sockets, no async runtimes, and no threa
 
 ```rust
 use std::collections::HashMap;
-use lurk_sansio::{GameEngine, GameConfig, Input, Output, ClientId};
+use lurk_engine::{GameEngine, GameConfig, Input, Output, ClientId};
 
 let rooms = HashMap::new();
 let config = GameConfig { initial_points: 100, stat_limit: 65535 };

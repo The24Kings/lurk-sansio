@@ -20,7 +20,7 @@
 //!
 //! ```rust
 //! use std::collections::HashMap;
-//! use lurk_sansio::{GameEngine, GameConfig, Input, Output, ClientId};
+//! use lurk_engine::{GameEngine, GameConfig, Input, Output, ClientId};
 //!
 //! // Build your world (rooms, monsters, connections)
 //! let rooms = HashMap::new();
@@ -46,7 +46,6 @@
 //! - **Portable**: Runs anywhere Rust compiles — embed in a server, WASM, or a test harness.
 //! - **Deterministic**: Same inputs always produce the same outputs (no internal randomness).
 
-#![doc(html_root_url = "https://docs.rs/lurk-sansio/1.0.5")]
 #![cfg_attr(docsrs, feature(doc_cfg, rustdoc_internals))]
 #![cfg_attr(docsrs, allow(internal_features))]
 // Ignored clippy and clippy_pedantic lints
@@ -102,7 +101,7 @@ pub mod input;
 pub mod output;
 /// Game world model: characters, rooms, monsters, and configuration.
 pub mod state;
-/// Protocol-level type re-exports from [`lurk_lcsc`].
+/// Protocol-level type re-exports from [`lurk_protocol`].
 pub mod types;
 
 pub use engine::GameEngine;

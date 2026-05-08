@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use lurk_lcsc::{LurkError, PktType};
+use lurk_protocol::{LurkError, PktType};
 
 use crate::engine::GameEngine;
 use crate::output::Output;

@@ -2,8 +2,8 @@ use std::collections::HashMap;
 use std::sync::Arc;
 
 use indexmap::IndexSet;
-use lurk_lcsc::{CharacterFlags, LurkError, PktType};
-use lurk_sansio::*;
+use lurk_engine::*;
+use lurk_protocol::{CharacterFlags, LurkError, PktType};
 
 // ==================== Test Helpers ====================
 
@@ -945,7 +945,7 @@ fn event_loop_drains_all_outputs() {
 #[test]
 fn no_io_imports_in_library() {
     // This test is a compile-time guarantee: the library compiles without std::net.
-    // If we accidentally import TcpStream, the library won't compile since lurk_lcsc
+    // If we accidentally import TcpStream, the library won't compile since lurk_protocol
     // types with TcpStream aren't used in our state types.
     let mut engine = new_engine();
     assert!(engine.poll_output().is_none());

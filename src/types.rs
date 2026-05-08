@@ -11,7 +11,7 @@ use serde::{Deserialize, Serialize};
 /// variants so the event loop knows which connection to target.
 ///
 /// ```rust
-/// use lurk_sansio::ClientId;
+/// use lurk_engine::ClientId;
 ///
 /// let id = ClientId(42);
 /// assert_eq!(format!("{id}"), "Client(42)");

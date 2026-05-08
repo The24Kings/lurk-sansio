@@ -6,7 +6,7 @@
 
 use std::sync::Arc;
 
-use lurk_lcsc::{LurkError, PktType};
+use lurk_protocol::{LurkError, PktType};
 use serde::{Deserialize, Serialize};
 
 use crate::state::{Character, Connection, Room};

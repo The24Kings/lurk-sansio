@@ -1,23 +1,19 @@
 [package]
-name = "lurk-sansio"
-version = "1.0.5"
+name = "lurk_engine"
+version = "1.0.0"
 authors = ["Riley Ziegler", "S. Seth Long, Ph.D"]
-categories = ["network-programming"]
 description = "Sans-IO game engine for the Lurk protocol"
-documentation = "https://docs.rs/lurk-sansio"
 edition = "2024"
 license = "MIT"
 readme = "README.md"
-repository = "https://github.com/The24Kings/lurk-sansio"
+repository = "https://github.com/The24Kings/lurk_engine"
 rust-version = "1.85"
 
 [dependencies]
 indexmap = { version = "2.14.0", features = ["serde"] }
-lurk_lcsc = { version = "2.3.21" }
 serde = { version = "1.0", features = ["derive", "rc"] }
 
+lurk_protocol = { path = "../lurk_protocol" }
+
 [package.metadata.docs.rs]
-rustdoc-args = [
-    "--generate-link-to-definition",
-    "--extern-html-root-url=std=https://doc.rust-lang.org",
-]
+rustdoc-args = ["--generate-link-to-definition"]

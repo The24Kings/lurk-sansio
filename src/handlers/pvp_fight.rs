@@ -1,4 +1,4 @@
-use lurk_lcsc::LurkError;
+use lurk_protocol::LurkError;
 use std::sync::Arc;
 
 use crate::engine::GameEngine;

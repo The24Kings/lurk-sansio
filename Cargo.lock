@@ -42,19 +42,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8f42a60cbdf9a97f5d2305f08a87dc4e09308d1276d28c869c684d7777685682"
 
 [[package]]
-name = "lurk-sansio"
-version = "1.0.5"
+name = "lurk_engine"
+version = "1.0.0"
 dependencies = [
  "indexmap",
- "lurk_lcsc",
+ "lurk_protocol",
  "serde",
 ]
 
 [[package]]
-name = "lurk_lcsc"
-version = "2.3.21"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "988eef9619111bfc284401e5ee548fe5ef4dc0a45169b7f3ecc86c7bca84da44"
+name = "lurk_protocol"
+version = "2.3.0"
 dependencies = [
  "bitflags",
  "serde",
